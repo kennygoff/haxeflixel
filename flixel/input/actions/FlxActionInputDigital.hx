@@ -36,9 +36,11 @@ class FlxActionInputDigitalMouseWheel extends FlxActionInputDigital
 		sign = Positive ? 1 : -1;
 	}
 	
-	override public function check(Action:FlxAction):Bool 
+	override public function check(Action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
-		return switch (trigger)
+		var checkTrigger = inputState == null ? trigger : inputState;
+
+		return switch (checkTrigger)
 		{
 			#if !FLX_NO_MOUSE
 				case PRESSED:       return  input.pressed  || input.justPressed;
@@ -151,9 +153,11 @@ class FlxActionInputDigitalGamepad extends FlxActionInputDigital
 		#end
 	}
 	
-	override public function check(Action:FlxAction):Bool 
+	override public function check(Action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
-		return switch (trigger)
+		var checkTrigger = inputState == null ? trigger : inputState;
+
+		return switch (checkTrigger)
 		{
 			case PRESSED:       return  input.pressed  || input.justPressed;
 			case RELEASED:      return  input.released || input.justReleased;
@@ -176,9 +180,11 @@ class FlxActionInputDigitalKeyboard extends FlxActionInputDigital
 		super(FlxInputDevice.KEYBOARD, Key, Trigger);
 	}
 	
-	override public function check(Action:FlxAction):Bool 
+	override public function check(Action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
-		return switch (trigger)
+		var checkTrigger = inputState == null ? trigger : inputState;
+
+		return switch (checkTrigger)
 		{
 			#if !FLX_NO_KEYBOARD
 			case PRESSED:       FlxG.keys.checkStatus(inputID, PRESSED ) || FlxG.keys.checkStatus(inputID, JUST_PRESSED);
@@ -203,26 +209,28 @@ class FlxActionInputDigitalMouse extends FlxActionInputDigital
 		super(FlxInputDevice.MOUSE, ButtonID, Trigger);
 	}
 	
-	override public function check(Action:FlxAction):Bool 
+	override public function check(Action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
+		var checkTrigger = inputState == null ? trigger : inputState;
+
 		return switch (inputID)
 		{
 			#if !FLX_NO_MOUSE
-			case FlxMouseButtonID.LEFT  : switch (trigger)
+			case FlxMouseButtonID.LEFT  : switch (checkTrigger)
 			{
 				case PRESSED:        FlxG.mouse.pressed || FlxG.mouse.justPressed;
 				case RELEASED:      !FlxG.mouse.pressed || FlxG.mouse.justReleased;
 				case JUST_PRESSED:   FlxG.mouse.justPressed;
 				case JUST_RELEASED:  FlxG.mouse.justReleased;
 			}
-			case FlxMouseButtonID.MIDDLE: switch (trigger)
+			case FlxMouseButtonID.MIDDLE: switch (checkTrigger)
 			{
 				case PRESSED:        FlxG.mouse.pressedMiddle || FlxG.mouse.justPressedMiddle;
 				case RELEASED:      !FlxG.mouse.pressedMiddle || FlxG.mouse.justReleasedMiddle;
 				case JUST_PRESSED:   FlxG.mouse.justPressedMiddle;
 				case JUST_RELEASED:  FlxG.mouse.justReleasedMiddle;
 			}
-			case FlxMouseButtonID.RIGHT : switch (trigger)
+			case FlxMouseButtonID.RIGHT : switch (checkTrigger)
 			{
 				case PRESSED:        FlxG.mouse.pressedRight || FlxG.mouse.justPressedRight;
 				case RELEASED:      !FlxG.mouse.pressedRight || FlxG.mouse.justReleasedRight;
@@ -256,9 +264,11 @@ class FlxActionInputDigitalSteam extends FlxActionInputDigital
 		#end
 	}
 	
-	override public function check(Action:FlxAction):Bool 
+	override public function check(Action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
-		return switch (trigger)
+		var checkTrigger = inputState == null ? trigger : inputState;
+
+		return switch (checkTrigger)
 		{
 			case PRESSED:        steamInput.pressed  || steamInput.justPressed;
 			case RELEASED:      !steamInput.released || steamInput.justReleased;
@@ -310,9 +320,11 @@ class FlxActionInputDigitalIFlxInput extends FlxActionInputDigital
 		input = Input;
 	}
 	
-	override public function check(action:FlxAction):Bool 
+	override public function check(action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
-		return switch (trigger)
+		var checkTrigger = inputState == null ? trigger : inputState;
+
+		return switch (checkTrigger)
 		{
 			case PRESSED:        input.pressed || input.justPressed;
 			case RELEASED:      !input.pressed || input.justReleased;

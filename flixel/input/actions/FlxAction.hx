@@ -310,6 +310,13 @@ class FlxAction implements IFlxDestroyable
 	 * The inputs attached to this action
 	 */
 	public var inputs:Array<FlxActionInput>;
+
+	/**
+	 * EXPERIMENTAL
+	 * Exposes the state change data to track more granular states of an action
+	 */
+	public var justPressed(default, null):Bool;
+	public var justReleased(default, null):Bool;
 	
 	private var _x:Null<Float> = null;
 	private var _y:Null<Float> = null;
@@ -417,6 +424,8 @@ class FlxAction implements IFlxDestroyable
 		
 		_timestamp = FlxG.game.ticks;
 		_checked = false;
+		justPressed = false;
+		justReleased = false;
 		
 		var len = inputs != null ? inputs.length : 0;
 		for (i in 0...len)
@@ -436,6 +445,9 @@ class FlxAction implements IFlxDestroyable
 			{
 				_checked = true;
 			}
+
+			justPressed = input.check(this, JUST_PRESSED);
+			justReleased = input.check(this, JUST_RELEASED);
 		}
 		
 		triggered = _checked;
