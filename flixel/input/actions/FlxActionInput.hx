@@ -54,7 +54,7 @@ class FlxActionInput implements IFlxDestroyable
 	 * @param	action
 	 * @return
 	 */
-	public function check(action:FlxAction):Bool
+	public function check(action:FlxAction, ?inputState:FlxInputState):Bool
 	{
 		return false;
 	}
