@@ -52,7 +52,7 @@ class FlxActionInput implements IFlxDestroyable
 	/**
 	 * Check whether this action has just been triggered
 	 */
-	public function check(action:FlxAction):Bool
+	public function check(action:FlxAction, ?inputState:FlxInputState):Bool
 	{
 		return false;
 	}

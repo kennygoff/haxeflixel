@@ -312,12 +312,19 @@ class FlxAction implements IFlxDestroyable
 	 */
 	public var inputs:Array<FlxActionInput>;
 
+	/**
+	 * EXPERIMENTAL
+	 * Exposes the state change data to track more granular states of an action
+	 */
+	public var justPressed(default, null):Bool;
+	public var justReleased(default, null):Bool;
+	
 	var _x:Null<Float> = null;
 	var _y:Null<Float> = null;
-
+	
 	var _timestamp:Int = 0;
 	var _checked:Bool = false;
-
+	
 	/**
 	 * Whether the steam controller inputs for this action have changed since the last time origins were polled. Always false if steam isn't active
 	 */
@@ -420,7 +427,9 @@ class FlxAction implements IFlxDestroyable
 
 		_timestamp = FlxG.game.ticks;
 		_checked = false;
-
+		justPressed = false;
+		justReleased = false;
+		
 		var len = inputs != null ? inputs.length : 0;
 		for (i in 0...len)
 		{
@@ -439,6 +448,9 @@ class FlxAction implements IFlxDestroyable
 			{
 				_checked = true;
 			}
+
+			justPressed = input.check(this, JUST_PRESSED);
+			justReleased = input.check(this, JUST_RELEASED);
 		}
 
 		triggered = _checked;

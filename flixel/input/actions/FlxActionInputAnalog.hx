@@ -297,18 +297,20 @@ class FlxActionInputAnalog extends FlxActionInput
 		xMoved = new FlxInput<Int>(0);
 		yMoved = new FlxInput<Int>(1);
 	}
-
-	override public function check(Action:FlxAction):Bool
+	
+	override public function check(Action:FlxAction, ?inputState:FlxInputState):Bool 
 	{
+		var checkTrigger = inputState == null ? trigger : inputState;
+
 		var returnVal = switch (axis)
 		{
-			case X: compareState(trigger, xMoved.current);
-			case Y: compareState(trigger, yMoved.current);
-			case BOTH: compareState(trigger, xMoved.current) && compareState(trigger, yMoved.current);
-			// in practice, "both pressed" and "both released" could be useful, whereas
-			// "both just pressed" and "both just released" seem like very unlikely real-world events
+			case X: compareState(checkTrigger, xMoved.current);
+			case Y: compareState(checkTrigger, yMoved.current);
+			case BOTH: compareState(checkTrigger, xMoved.current) && compareState(checkTrigger, yMoved.current);
+			//in practice, "both pressed" and "both released" could be useful, whereas 
+			//"both just pressed" and "both just released" seem like very unlikely real-world events
 			case EITHER:
-				switch (trigger)
+				switch (checkTrigger)
 				{
 					case PRESSED: checkAxis(A_X, PRESSED) || checkAxis(A_Y, PRESSED); // either one pressed
 					case RELEASED: checkAxis(A_X, RELEASED) || checkAxis(A_Y, RELEASED); // either one NOT pressed
